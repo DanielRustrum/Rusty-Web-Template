@@ -1,9 +1,7 @@
 import { createUseStyles } from 'react-jss'
 import { trpc } from 'services/trpc/trpc'
 import demoData from 'data/demo'
-
-//@ts-ignore Styles
-import styles from 'page-styles/index' 
+import styles from 'page_styles/index' 
 
 const useStyles = createUseStyles({
   container: {

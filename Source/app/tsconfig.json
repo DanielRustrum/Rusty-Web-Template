@@ -18,7 +18,7 @@
       "components/*": ["./components/*"],
       "services/*": ["./services/*"],
       "styles/*": ["./styles/*.scss"],
-      "page-styles/*": ["./styles/pages/*.module.scss"],
+      "page_styles/*": ["./styles/pages/*.module.scss"],
       "data/*": ["./data/*.json"]
     }
   },
