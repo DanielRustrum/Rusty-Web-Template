@@ -1,8 +1,10 @@
-import '../styles/globals.scss'
-import type { AppProps } from 'next/app'
 import React from 'react'
 import { NextPage } from 'next'
-import {trpc} from '../services/trpc/trpc'
+import type { AppProps } from 'next/app'
+
+import 'styles/globals.scss'
+import {trpc} from 'services/trpc/trpc'
+
 import Head from 'next/head'
 
 interface PageDataType {

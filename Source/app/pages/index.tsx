@@ -1,5 +1,5 @@
 import { createUseStyles } from 'react-jss'
-import { trpc } from '../services/trpc/trpc'
+import { trpc } from 'services/trpc/trpc'
 
 const useStyles = createUseStyles({
   container: {
