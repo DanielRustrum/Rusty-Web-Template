@@ -1,5 +1,9 @@
 import { createUseStyles } from 'react-jss'
 import { trpc } from 'services/trpc/trpc'
+import demoData from 'data/demo'
+
+//@ts-ignore Styles
+import styles from 'page-styles/index' 
 
 const useStyles = createUseStyles({
   container: {
@@ -22,7 +26,12 @@ export default function IndexPage() {
       <h1 className={classes.header}>
         Example on how to use react-jss with Next.js
       </h1>
-      <p>{query}</p>
+      <p className={styles.jsonViewer}>Data: {JSON.stringify(demoData)}</p>
+      <p>Query: {query}</p>
     </div>
   )
 }
+
+IndexPage.setData = () => {return{
+  title: "Rusty Web Template - Home"
+}}

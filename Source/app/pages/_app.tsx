@@ -2,7 +2,7 @@ import React from 'react'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
-import 'styles/globals.scss'
+import 'styles/globals'
 import {trpc} from 'services/trpc/trpc'
 
 import Head from 'next/head'
