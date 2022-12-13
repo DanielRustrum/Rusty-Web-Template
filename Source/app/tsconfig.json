@@ -19,7 +19,7 @@
       "services/*": ["./services/*"],
       "styles/*": ["./styles/*.scss"],
       "page_styles/*": ["./styles/pages/*.module.scss"],
-      "data/*": ["./data/*.json"]
+      "data/*": ["./data/*.json"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

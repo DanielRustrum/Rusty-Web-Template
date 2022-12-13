@@ -4,15 +4,10 @@ import type { AppProps } from 'next/app'
 
 import 'styles/globals'
 import {trpc} from 'services/trpc/trpc'
-
-import Head from 'next/head'
-
-interface PageDataType {
-    title: string
-}
+import { layout, PageDataType, DefaultPageData } from './_layout'
 
 type NextPageWithLayout = NextPage & {
-    setData?: () => PageDataType
+    setData?: PageDataType
     setLayout?: (page: JSX.Element, props: PageDataType) => JSX.Element
 }
 type AppPropsWithLayout = AppProps & {
@@ -20,18 +15,9 @@ type AppPropsWithLayout = AppProps & {
 }
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
-    const setData = Component.setData?? (() => {return{
-        title: "Rusty Web Template"
-    }})
+    const setData = Component.setData?? DefaultPageData
 
-    const getLayout = Component.setLayout ?? (
-        (page, props) => <>
-            <Head>
-                <title>{props.title}</title>
-            </Head>
-            {page}
-        </>
-    )
+    const getLayout = Component.setLayout ?? layout
 
     React.useEffect(() => {
         const style = document.getElementById('server-side-styles')
@@ -40,7 +26,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         }
     }, [])
 
-    return getLayout(<Component {...pageProps} />, setData())
+    return getLayout(<Component {...pageProps} />, setData)
 }
 
 export default trpc.withTRPC(App)

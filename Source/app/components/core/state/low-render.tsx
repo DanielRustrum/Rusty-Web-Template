@@ -1,6 +1,16 @@
 import React from "react"
 
-export function createLowRenderState <DataType>(initial_state: DataType) {
+export function createLowRenderState <DataType>(initial_state: DataType): [
+    (props: {
+        children: React.ReactNode
+    }) => JSX.Element,
+    <SelectorOutput>(
+        selector: ((value: DataType) => (SelectorOutput | DataType))
+    ) => [
+        SelectorOutput | DataType,
+        (value: DataType | Partial<DataType>) => void
+    ]
+] {
     type PartialOrNot = DataType | Partial<DataType>
 
     function setup():{
@@ -78,7 +88,7 @@ export function createLowRenderState <DataType>(initial_state: DataType) {
 
     function Provider({children}:{
         children: React.ReactNode
-    }) {
+    }): JSX.Element {
         return (
             <lowRenderContext.Provider value={setup()}>
                 {children}
