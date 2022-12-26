@@ -4,4 +4,4 @@ namespace MediaTypes {}
 
 export function Image() {}
 export function useVideo() {}
-export function usexAudio() {}
+export function useAudio() {}

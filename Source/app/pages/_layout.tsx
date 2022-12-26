@@ -10,23 +10,32 @@ export const DefaultPageData: PageDataType = {
     title: "Rusty Web Template"
 }
 
-export function layout (
-    page: JSX.Element,
-    props: PageDataType
-) {
+export function StaticLayout (
+    root: JSX.Element,
+    data: PageDataType
+): JSX.Element {
     return (
         <>
             <Head>
-                <title>{props.title}</title>
+                <title>{data.title}</title>
             </Head>
-            {page}
+            <main>
+                {root}
+            </main>
         </>
     )
 }
 
+export function OverridableLayout (
+    root: JSX.Element,
+    data: PageDataType
+): JSX.Element {
+    return root
+}
+
 export type SetLayoutType = ((
-    page: JSX.Element,
-    props: PageDataType
+    root: JSX.Element,
+    data: PageDataType
 ) => JSX.Element)
 
 // Hides Page from page navigation

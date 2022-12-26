@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app'
 
 import 'styles/globals'
 import {trpc} from 'services/trpc/trpc'
-import { layout, PageDataType, DefaultPageData } from './_layout'
+import { OverridableLayout, PageDataType, DefaultPageData, StaticLayout } from './_layout'
 
 type NextPageWithLayout = NextPage & {
     setData?: PageDataType
@@ -15,9 +15,12 @@ type AppPropsWithLayout = AppProps & {
 }
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
-    const setData = Component.setData?? DefaultPageData
+    const setData = {
+        ...DefaultPageData,
+        ...Component.setData
+    }
 
-    const getLayout = Component.setLayout ?? layout
+    const getLayout = Component.setLayout ?? OverridableLayout
 
     React.useEffect(() => {
         const style = document.getElementById('server-side-styles')
@@ -26,7 +29,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         }
     }, [])
 
-    return getLayout(<Component {...pageProps} />, setData)
+    return StaticLayout(getLayout(<Component {...pageProps} />, setData), setData)
 }
 
 export default trpc.withTRPC(App)

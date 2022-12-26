@@ -75,7 +75,6 @@ export function createLowRenderState <DataType>(initial_state: DataType): [
 
         if(selector === undefined) selector = function<DataType>(value: DataType){return value}
         if(!context) throw new Error(`No Context found for ${initial_state}`);
-
         const state = React.useSyncExternalStore(context.subscribe, () => {
             return selector(context.get())
         })
