@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest -c vitest.config.ts",
     "doc": "typedoc --plugin typedoc-plugin-markdown --name AutoDoc --entryDocument . --hideGenerator --githubPages false --hideInPageTOC true --hideBreadcrumbs true --disableSources --out ../../Docs/autodoc --entryPointStrategy expand components  --entryPointStrategy expand services"
   },
   "dependencies": {
@@ -35,6 +36,7 @@
     "@testing-library/react": "^13.4.0",
     "@types/uuid": "^9.0.0",
     "@vitejs/plugin-react": "^3.0.0",
+    "jsdom": "^20.0.3",
     "sass": "^1.56.1",
     "typedoc": "^0.23.23",
     "typedoc-plugin-markdown": "^3.14.0",

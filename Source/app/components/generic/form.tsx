@@ -202,9 +202,9 @@ export const createFormGroup: FormTypes.CreateFormGroupFunction = (group_id, for
                         >
                             {ElementList(
                                 uid_config.options?? [],
-                                (key, value, index) => {
+                                (value, index) => {
                                     return <option 
-                                        key={key}
+                                        key={index}
                                         value={`${value}`}
                                     >
                                         {`${value}`}
