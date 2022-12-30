@@ -1,2 +1,2 @@
-cd ../Source/app
+Set-Location ../Source/app
 npm run doc
