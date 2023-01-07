@@ -1,5 +1,11 @@
 import React from "react"
 
+/** A custom React hook for managing state in a map.
+ *
+ * @returns A tuple containing two functions:
+ * - The first function is used to retrieve the value associated with a given key in the map.
+ * - The second function is used to update the value associated with a given key in the map.
+ */
 export function useMapState<Key, Value>(): [
     (key:Key) => Value | undefined,
     (key:Key, value:Value) => void
@@ -19,6 +25,15 @@ export function useMapState<Key, Value>(): [
     return [getMapState, updateMap]
 }
 
+/**
+ * A custom React hook for managing state in an array.
+ *
+ * @returns A tuple containing four functions:
+ * - The first function is used to retrieve the current state of the array.
+ * - The second function is used to append a value to the end of the array.
+ * - The third function is used to remove a value at a given index from the array.
+ * - The fourth function is used to remove and return the last value from the array.
+ */
 export function useArrayState<ArrayType>(): [
     readonly ArrayType[],
     (value: ArrayType) => void,

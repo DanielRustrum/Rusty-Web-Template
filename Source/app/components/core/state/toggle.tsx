@@ -1,9 +1,17 @@
 import React from "react"
 
+/**
+ * A namespace for creating a toggleable element that displays a specific child element based on a state.
+ */
 export namespace ElementToggle {
-    enum BlankState {}
-
-    export function StateGroup<StateEnum = BlankState>({
+    /**
+     * A toggleable element that displays a specific child element based on a state.
+     *
+     * @param display - The state that determines which child element to display
+     * @param children - The child elements of the toggleable element
+     * @returns A toggleable element that displays the appropriate child element based on the state
+     */
+    export function StateGroup<StateEnum>({
         display, children
     }:{
         display: StateEnum
@@ -28,6 +36,13 @@ export namespace ElementToggle {
         )
     }
     
+    /**
+     * A child element of the toggleable element.
+     *
+     * @param name - The state that determines whether this element is displayed by the toggleable element
+     * @param children - The content of the child element
+     * @returns A child element of the toggleable element
+     */
     export function State({
         name, children
     }:{
@@ -42,6 +57,14 @@ export namespace ElementToggle {
     }
 }
 
+/**
+ * A custom React hook for managing a state that can be toggled between two values.
+ *
+ * @param items - The items that can be toggled
+ * @param primary_state - The primary state
+ * @param secondary_state - The secondary state
+ * @returns A tuple containing a Map of the current states and a function for toggling the state of an item
+ */
 export function useToggleState<StateType, StateValue>(
     items: Array<StateType>,
     primary_state: StateValue,
@@ -57,10 +80,10 @@ export function useToggleState<StateType, StateValue>(
 
     return [states, (key:StateType) => {
         let new_map = new Map<StateType, StateValue>()
-        //@ts-ignore
-        for (const map_key of states.keys()) {
-            if(map_key === key) new_map.set(map_key, primary_state);
-            else new_map.set(map_key, secondary_state);
+        
+        for (const map_key of Object.keys(states)) {
+            if(map_key === key) new_map.set(map_key as StateType, primary_state);
+            else new_map.set(map_key as StateType, secondary_state);
         }
 
         setState(new_map)
