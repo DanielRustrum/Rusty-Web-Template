@@ -71,21 +71,25 @@ export function useToggleState<StateType, StateValue>(
     secondary_state: StateValue
 ): [Map<StateType, StateValue>, (set: StateType) => void ]{
     let init_map = new Map()
+
     items.forEach(item => {
         init_map.set(item, secondary_state)
     })
+
     init_map.set(items[0], primary_state)
 
     let [states, setState] = React.useState(init_map)
 
-    return [states, (key:StateType) => {
+    function setToggleState(key:StateType) {
         let new_map = new Map<StateType, StateValue>()
         
-        for (const map_key of Object.keys(states)) {
-            if(map_key === key) new_map.set(map_key as StateType, primary_state);
-            else new_map.set(map_key as StateType, secondary_state);
-        }
+        items.forEach(value => {
+            if(value === key) new_map.set(value as StateType, primary_state);
+            else new_map.set(value as StateType, secondary_state);
+        })
 
         setState(new_map)
-    }]
+    }
+
+    return [states, setToggleState]
 }

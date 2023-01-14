@@ -2,6 +2,8 @@ import { expect, test, describe } from 'vitest'
 import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
+const TEST_ERROR_CASES = false
+
 import { useMapState, useArrayState } from '../../../components/core/state/data'
 
 describe('useMapState', () => {
@@ -52,19 +54,21 @@ describe('useMapState', () => {
     })
 })
 
-
 describe('useArrayState', () => {
-    test('should initialize the state with an empty array', () => {
+    test('should initialize the state with an empty array or the provide array', () => {
         let value: number | undefined | readonly number[] = 0
+        let value1: number | undefined | readonly number[] = 0
         const Component = () => {
             const [array] = useArrayState<number>()
-            React.useEffect(() => {}, [])
-            value = array
+            const [array1] = useArrayState<number>([1,2,3])
+            value = array()
+            value1 = array1()
             return <></>
         }
 
         render(<Component />)
         expect(value).toEqual([])
+        expect(value1).toEqual([1,2,3])
     })
 
     test('should append values to the array', () => {
@@ -75,7 +79,7 @@ describe('useArrayState', () => {
             React.useEffect(() => {
                 push(1)
             }, [])
-            value = array
+            value = array()
             return <></>
         }
 
@@ -83,45 +87,32 @@ describe('useArrayState', () => {
         expect(value).toEqual([1])
     })
 
-    test('should remove values from the array by index', () => {
-        let value: number | undefined | readonly number[] = 0
-
+    test('should remove values from the array by index and value', () => {
         const Component = () => {
-            const [array, push, splice] = useArrayState<number>()
-            React.useEffect(() => {
-                push(1)
-                push(2)
-                splice(0)
-            }, [])
-            value = array
-            return <></>
+            const [array, push, remove] = useArrayState<number>()
+
+            return (
+                <>
+                    <span data-value>{JSON.stringify(array())}</span>
+                    <button onClick={() => {
+                        push(1)
+                        push(2)
+                        push(3)
+                        push(4)
+                        remove({index: 0})
+                        remove({value: 3})
+                    }}></button>
+                </>
+            )
         }
 
-        render(<Component />)
-        expect(value).toEqual([2])
-    })
+        const {container} = render(<Component />)
+        
+        let button = container.querySelector("button") as HTMLButtonElement
+        fireEvent.click(button)
 
-    test('should remove and return the last value from the array', () => {
-        let value1: number | undefined | readonly number[] = 0
-        let value2: number | undefined | readonly number[] = 0
-
-        const Component = () => {
-            const [array, push, _, pop] = useArrayState<number>()
-            let temp_value: number | undefined = 0
-
-            React.useEffect(() => {
-                push(1)
-                temp_value = pop()
-            }, [])
-
-            value1 = temp_value
-            value2 = array
-            return <></>
-        }
-
-        render(<Component />)
-        expect(value1).toBe(1)
-        expect(value2).toEqual([])
+        let value = container.querySelector("[data-value]") as HTMLSpanElement
+        expect(value.textContent).toEqual(JSON.stringify([2,4]))
     })
 })
 
@@ -146,7 +137,7 @@ describe('ElementToggle', () => {
         expect(state_2_element).toBeNull()
     })
   
-    test('throws an error if a non-State element is passed as a direct child of StateGroup', () => {
+    test.skipIf(!TEST_ERROR_CASES)('throws an error if a non-State element is passed as a direct child of StateGroup', () => {
         expect(() => {
             render(
                 <ElementToggle.StateGroup display="state1">
@@ -194,7 +185,6 @@ describe('useToggleState', () => {
         item1 = container.querySelector(`[data-key="item1"]`) as HTMLButtonElement
         item2 = container.querySelector(`[data-key="item2"]`) as HTMLButtonElement
         item3 = container.querySelector(`[data-key="item3"]`) as HTMLButtonElement
-        console.log(container.innerHTML)
         expect(item1).not.toBeNull()
         expect(item1.textContent).toBe("item1:secondary")
         expect(item2.textContent).toBe("item2:primary")

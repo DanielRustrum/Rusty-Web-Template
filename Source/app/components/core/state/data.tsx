@@ -1,4 +1,5 @@
 import React from "react"
+import { array } from "zod"
 
 /** A custom React hook for managing state in a map.
  *
@@ -34,38 +35,48 @@ export function useMapState<Key, Value>(): [
  * - The third function is used to remove a value at a given index from the array.
  * - The fourth function is used to remove and return the last value from the array.
  */
-export function useArrayState<ArrayType>(): [
-    readonly ArrayType[],
+export function useArrayState<ArrayType>(init_state: Array<ArrayType> = new Array<ArrayType>()): [
+    () => ArrayType[],
     (value: ArrayType) => void,
-    (index: number) => void,
-    () => (ArrayType | undefined),
+    (options: {
+        index?: number,
+        value?: ArrayType
+    }) => void,
 ] {
-    const [array_state, setArrayState] = React.useState(new Array<ArrayType>())
+    const [array_state, setArrayState] = React.useState(init_state)
+    const getArray = () => array_state
+    
     const pushToArrayState = (value: ArrayType) => {
         setArrayState(prev_array => [
             ...prev_array, value
         ])
     }
-    const popFromArrayState = () => {
-        let popped_value: ArrayType | undefined
 
+    const removeFromArrayState = (options: {
+        index?: number,
+        value?: ArrayType
+    }) => {
         setArrayState(prev_array => {
-            popped_value = prev_array.pop()
+            let index: number | undefined = undefined
+            
+            if(options.index !== undefined) {
+                index = options.index
+            }
+            if(options.value !== undefined) {
+                index = prev_array.indexOf(options.value);
+
+                console.log(index)
+
+                if(index === -1)
+                    index = undefined;
+            }
+
+            if(index !== undefined)
+                prev_array.splice(index, 1);
+
             return [...prev_array]
         })
-
-        return popped_value
     }
 
-    const spliceFromArrayState = (index: number) => {
-
-        setArrayState(prev_array => {
-            if (array_state.length === 0) return [];
-
-            prev_array.splice(index, 1)
-            return [...prev_array]
-        })
-    }
-
-    return [array_state, pushToArrayState, spliceFromArrayState, popFromArrayState]
+    return [getArray, pushToArrayState, removeFromArrayState]
 }

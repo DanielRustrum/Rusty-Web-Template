@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest -c vitest.config.ts",
+    "test": "vitest --passWithNoTests -c vitest.config.ts",
     "doc": "typedoc --plugin typedoc-plugin-markdown --name AutoDoc --entryDocument . --hideGenerator --githubPages false --hideInPageTOC true --hideBreadcrumbs true --disableSources --out ../../Docs/autodoc --entryPointStrategy expand components  --entryPointStrategy expand services"
   },
   "dependencies": {
