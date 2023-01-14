@@ -5,7 +5,7 @@ export function createLowRenderState <DataType>(initial_state: DataType): [
         children: React.ReactNode
     }) => JSX.Element,
     <SelectorOutput>(
-        selector: ((value: DataType) => (SelectorOutput | DataType))
+        selector?: ((value: DataType) => (SelectorOutput | DataType))
     ) => [
         SelectorOutput | DataType,
         (value: DataType | Partial<DataType>) => void
@@ -64,13 +64,14 @@ export function createLowRenderState <DataType>(initial_state: DataType): [
     const lowRenderContext = React.createContext<setupReturnType | null>(null)
 
     function useState<SelectorOutput>(
-        selector: 
-            ((value: DataType) => (SelectorOutput | DataType)) 
-            = (value) => value
+        selector: ((value: DataType) => (SelectorOutput | DataType)) = value => value
     ): [
         SelectorOutput | DataType,
         (value: PartialOrNot) => void
     ] {
+        if(selector === undefined) 
+            selector = value => value;
+
         const context = React.useContext(lowRenderContext)
 
         if(selector === undefined) selector = function<DataType>(value: DataType){return value}

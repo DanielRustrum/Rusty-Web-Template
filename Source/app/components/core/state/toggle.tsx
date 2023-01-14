@@ -21,9 +21,9 @@ export namespace ElementToggle {
     
         React.Children.forEach(children, (child, index) => {
             if (!React.isValidElement(child)) return;
-            if (typeof child.type === 'string' || child.type.name !== 'State') {
-                throw new Error(`Invalid Element: element of ${typeof child.type === 'string'? " string": child.type?.name} isn't valid as a direct child of PanelGroup.`);
-            }
+
+            if (typeof child.type === 'string' || child.type.name !== 'State')
+                throw new Error(`Invalid Element: element of${typeof child.type === 'string'? " string": child.type?.name} isn't valid as a direct child of StateGroup.`);
     
             if(child.props.name === display) 
                 display_child = child.props.children;
